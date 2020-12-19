@@ -1,0 +1,30 @@
+<?php
+$host = 'localhost';
+//改成你登入phpmyadmin帳號
+$user = 'root';
+//改成你登入phpmyadmin密碼
+$passwd = 'iqj6tc2z';
+//資料庫名稱
+$database = 'ibeacon';
+
+//實例化mysqli(資料庫路徑, 登入帳號, 登入密碼, 資料庫)
+$connect = new mysqli($host, $user, $passwd, $database);
+ 
+if ($connect->connect_error) {
+    die("連線失敗: " . $connect->connect_error);
+}
+echo "連線成功";
+//設定連線編碼，防止中文字亂碼
+$connect->query("SET NAMES 'utf8'");
+$value1=$_POST["temp1"];
+$value2=$_POST["temp2"];
+//$value3=$_POST["temp3"];
+$insertSql = "INSERT INTO MAC (address,distance) VALUES ($value1,$value2)";
+//呼叫query方法(SQL語法)
+$status = $connect->query($insertSql);
+ 
+if ($status) {
+    echo '新增成功';
+} else {
+    echo "錯誤: " . $insertSql . "<br>" . $connect->error;
+}
